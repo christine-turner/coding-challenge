@@ -18,6 +18,12 @@ public class Movie {
     // Default constructor required by Jackson
     public Movie() {}
 
+    public Movie(String title, int year, Set<Genre> genres) {
+        this.title = title;
+        this.year = year;
+        this.genres = genres;
+    }
+
     // Getters and setters
     @JsonProperty("title")
     public String getTitle() { return title; }
