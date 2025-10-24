@@ -1,0 +1,24 @@
+[
+  {
+    "title": "Sample Action Movie",
+    "year": 2020,
+    "genres": ["Action"],
+    "cast": ["Actor A", "Actor B"],
+    "href": "/movies/action",
+    "extract": "An action-packed adventure.",
+    "thumbnail": "sample1.jpg",
+    "thumbnail_width": 200,
+    "thumbnail_height": 300
+  },
+  {
+    "title": "Romantic Drama",
+    "year": 2018,
+    "genres": ["Romance", "Drama"],
+    "cast": ["Actor C", "Actor D"],
+    "href": "/movies/romance",
+    "extract": "A heartfelt romantic story.",
+    "thumbnail": "sample2.jpg",
+    "thumbnail_width": 150,
+    "thumbnail_height": 250
+  }
+]
