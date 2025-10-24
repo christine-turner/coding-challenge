@@ -4,6 +4,7 @@ import com.example.model.Movie;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.logging.Log;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
@@ -19,17 +20,18 @@ public class JsonMovieLoader {
 
     private Set<Movie> movies;
 
+    @PostConstruct
+    void init() {
+        movies = loadMovies();
+    }
+
     public Set<Movie> getMovies() {
-        if (movies == null) {
-            movies = loadMovies();
-        }
         return movies;
     }
 
     private Set<Movie> loadMovies() {
         try (InputStream movieFile = getClass().getClassLoader().getResourceAsStream(moviesFile)) {
             if (movieFile == null) {
-                Log.errorf("Could not find %s in resources", moviesFile);
                 throw new RuntimeException("Could not find " + moviesFile);
             }
 
