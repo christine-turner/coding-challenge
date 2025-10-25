@@ -167,9 +167,9 @@
     ora "8.2.0"
     rxjs "7.8.2"
 
-"@angular/animations@20":
+"@angular/animations@^20.3.7":
   version "20.3.7"
-  resolved "https://registry.npmjs.org/@angular/animations/-/animations-20.3.7.tgz"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-20.3.7.tgz#a3db69410b980b289bf3f1790ea52d837b7450b9"
   integrity sha512-i655RaL0zmLE3OESUlDnRNBDRIMW/67nTQvMqP6V1cQ42l2+SMJtREsxmX6cWt55/qvvgeytAA6aBN4aerBl5A==
   dependencies:
     tslib "^2.3.0"
@@ -208,9 +208,9 @@
   optionalDependencies:
     lmdb "3.4.2"
 
-"@angular/cdk@20":
+"@angular/cdk@^20.2.10":
   version "20.2.10"
-  resolved "https://registry.npmjs.org/@angular/cdk/-/cdk-20.2.10.tgz"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-20.2.10.tgz#56cf4cf1ec0175f07c19ddd1c2d3addda1a914f3"
   integrity sha512-d95C2r3JP11KCahouWmPaxswz/EE7Zn1k8ocoGt70jl33x42Sg96vAHeOpnQ4yfrdA4W7Q+eWB/NqqvAGCzOPQ==
   dependencies:
     parse5 "^8.0.0"
@@ -282,9 +282,9 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/material@20":
+"@angular/material@^20.2.10":
   version "20.2.10"
-  resolved "https://registry.npmjs.org/@angular/material/-/material-20.2.10.tgz"
+  resolved "https://registry.yarnpkg.com/@angular/material/-/material-20.2.10.tgz#49109a8a7bf1beb37c55df9b75c097c139b224a6"
   integrity sha512-WkJfUu7KiQY2lqHjMZtEKBG653sPmky0nytTMASsfQ/xUs56W3CAAEOuKhSyCNKsNeFJZS/NgJnvlpRzcE5k6g==
   dependencies:
     tslib "^2.3.0"
