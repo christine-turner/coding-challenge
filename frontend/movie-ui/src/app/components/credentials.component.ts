@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { AuthService } from '../service/auth.service';
 import { DataService } from '../service/data.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'credentials-component',
@@ -11,8 +13,16 @@ import { DataService } from '../service/data.service';
     <div class="login-container">
       <h2>Movie Database</h2>
       Please enter your credentials so you can access the movie database.
-      <input [(ngModel)]="username" placeholder="Username" />
-      <input [(ngModel)]="password" type="password" placeholder="Password" />
+
+      <input [(ngModel)]="username" (ngModelChange)="updateCredentials()" placeholder="Username" />
+
+      <input
+        [(ngModel)]="password"
+        type="password"
+        (ngModelChange)="updateCredentials()"
+        placeholder="Password"
+      />
+
       <button (click)="search()">Search</button>
     </div>
   `,
@@ -29,12 +39,28 @@ import { DataService } from '../service/data.service';
   ],
 })
 export class CredentialsComponent {
+  filters?: { title?: string; year?: string; genres?: string };
+  private filtersSubscription!: Subscription;
   username = '';
   password = '';
 
-  constructor(private dataService: DataService, private router: Router) {}
+  constructor(private authService: AuthService, private dataService: DataService) {}
+  ngOnInit() {
+    this.filtersSubscription = this.dataService.filters$.subscribe((filters) => {
+      this.filters = filters || undefined;
+    });
+  }
+  // Called on every keystroke in input fields
+  updateCredentials() {
+    this.authService.setCredentials(this.username, this.password);
+  }
 
   search() {
-    this.dataService.loadMovies(this.username, this.password);
+    this.updateCredentials();
+    this.dataService.loadMovies(this.username, this.password, this.filters);
+  }
+
+  ngOnDestroy() {
+    this.filtersSubscription.unsubscribe(); // prevents memory leak
   }
 }

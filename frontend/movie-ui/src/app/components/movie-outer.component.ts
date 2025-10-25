@@ -9,4 +9,5 @@ import { MovieTableComponent } from './movie-table.component';
   imports: [CommonModule, MovieTableComponent, CredentialsComponent],
   template: `<credentials-component></credentials-component> <app-movie-table></app-movie-table>`,
 })
-export class MovieOuterComponent {}
+export class MovieOuterComponent {
+}

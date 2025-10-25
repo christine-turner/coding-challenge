@@ -15,6 +15,8 @@ import org.jboss.resteasy.reactive.RestResponse;
 import com.example.model.Movie;
 import com.example.service.MovieService;
 
+import io.quarkus.logging.Log;
+
 @ApplicationScoped
 @Path("/api/movies")
 public class MovieResource {
@@ -33,6 +35,7 @@ public class MovieResource {
     public RestResponse<Set<Movie>> findMovies(@BeanParam MovieSearchCriteria criteria) {
         try {
             Set<Movie> movies = service.findMovies(criteria);
+            Log.infof("Returning %d movies", movies.size());
             return RestResponse.ok(movies);
         } catch (IllegalArgumentException e) {
             return RestResponse.status(RestResponse.Status.BAD_REQUEST, Set.of());
