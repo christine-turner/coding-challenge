@@ -6,7 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { AuthService } from '../service/auth.service';
+import { DataService } from '../service/data.service';
+import { Subscription } from 'rxjs';
 
 export interface Movie {
   title: string;
@@ -21,7 +22,6 @@ export interface Movie {
   template: `
     <div class="movie-table-container">
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
         <ng-container matColumnDef="title">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
           <td mat-cell *matCellDef="let movie">{{ movie.title }}</td>
@@ -38,46 +38,50 @@ export interface Movie {
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
 
       <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </div>
   `,
-  styles: [`
-    .movie-table-container {
-      margin: 2rem;
-      overflow: auto;
-    }
-    table {
-      width: 100%;
-    }
-  `]
+  styles: [
+    `
+      .movie-table-container {
+        margin: 2rem;
+        overflow: auto;
+      }
+      table {
+        width: 100%;
+      }
+    `,
+  ],
 })
 export class MovieTableComponent implements AfterViewInit {
   displayedColumns: string[] = ['title', 'year', 'genres'];
+
   dataSource = new MatTableDataSource<Movie>();
+  private subscription!: Subscription;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private auth: AuthService) {}
+  constructor(private dataService: DataService) {}
 
   ngOnInit() {
-    if (this.auth.isLoggedIn()) {
-      this.auth.getMovies().subscribe({
-        next: movies => {
-          this.dataSource.data = movies;
-        },
-        error: err => console.error('Failed to load movies', err)
-      });
-    } else {
-      console.warn('User not logged in, skipping movie load.');
-    }
+    this.dataService.movies$.subscribe((movies) => {
+      this.dataSource.data = movies;
+    });
+    this.subscription = this.dataService.movies$.subscribe((movies) => {
+      this.dataSource.data = movies;
+    });
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe(); // prevents memory leak
   }
 }

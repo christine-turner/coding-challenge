@@ -1,19 +1,16 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { App } from './app/app';
 import { provideRouter } from '@angular/router';
-import { LoginComponent } from './app/components/login.component';
-import { MovieTableComponent } from './app/components/movie-table.component';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { MovieOuterComponent } from './app/components/movie-outer.component';
 
 bootstrapApplication(App, {
   providers: [
     importProvidersFrom(HttpClientModule), // provide HttpClient
     provideRouter([
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-   //   { path: '**', redirectTo: 'login', pathMatch: 'full' },
-      { path: 'login', component: LoginComponent },
-      { path: 'movies', component: MovieTableComponent }
-    ])
-  ]
-}).catch(err => console.error(err));
+      { path: '', redirectTo: 'movies', pathMatch: 'full' },
+      { path: 'movies', component: MovieOuterComponent },
+    ]),
+  ],
+}).catch((err) => console.error(err));
