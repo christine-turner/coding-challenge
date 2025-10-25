@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Movie } from './movie-table.component';
+import { Movie } from '../components/movie-table.component';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

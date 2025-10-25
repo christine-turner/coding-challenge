@@ -6,7 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { AuthService } from './auth.service';
+import { AuthService } from '../service/auth.service';
 
 export interface Movie {
   title: string;
