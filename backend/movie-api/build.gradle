@@ -12,10 +12,14 @@ dependencies {
     implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-security'
     implementation 'io.quarkus:quarkus-rest'
-    implementation 'io.quarkus:quarkus-elytron-security-properties-file'
     implementation 'io.quarkus:quarkus-arc'
     implementation 'io.quarkus:quarkus-jackson'
     implementation 'io.quarkus:quarkus-rest-jackson'
+
+    // Security: Basic auth with file-based users/roles
+    implementation "io.quarkus:quarkus-elytron-security-properties-file"
+
+    // Testing
     testImplementation 'io.quarkus:quarkus-junit5'            
     testImplementation 'io.quarkus:quarkus-junit5-mockito'   
     testImplementation 'io.rest-assured:rest-assured'
