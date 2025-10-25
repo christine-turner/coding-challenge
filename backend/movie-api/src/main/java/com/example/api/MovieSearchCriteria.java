@@ -50,4 +50,8 @@ public class MovieSearchCriteria {
         this.genreStrings = new ArrayList<String>();
         this.genreStrings.addAll(genreStrings);
     }
+
+    public String toString() {
+        return String.format("MovieSearchCriteria[title=%s, year=%s, genres=%s]", title, year, genreStrings);
+    }
 }
