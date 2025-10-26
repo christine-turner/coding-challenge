@@ -91,20 +91,9 @@ Search movies with optional query parameters:
 
 ## Example cURL Requests
 
-### 1. Unauthorized (no credentials supplied to an authorised endpoint)
-```bash
-curl -i http://localhost:8080/api/movies
-```
+### 1. Public Access (no authentication required)
+Access an endpoint that does not require authentication:
 
-#### Expected Response
-````
-HTTP/1.1 401 Unauthorized
-WWW-Authenticate: basic
-Content-Length: 0
-````
----
-
-### 2. Public access (no authentication required)
 ```bash
 curl http://localhost:8080/api/movies/public
 ```
@@ -114,42 +103,45 @@ curl http://localhost:8080/api/movies/public
 Public movies endpoint (no auth required)
 ```
 ---
-### 3. User role access
+
+### 2. Unauthorized Access (no credentials supplied to a protected endpoint)
+Attempt to access a protected endpoint without credentials:
+
+```bash
+curl -i http://localhost:8080/api/movies
+```
+
+#### Expected Response (401 Unauthorized)
+```
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: basic
+Content-Length: 0
+```
+---
+
+### 3. User Role Access
+#### 3a. Successful Access (user role)
+Access the user endpoint with valid user credentials:
 
 ```bash
 curl -u user:user123 http://localhost:8080/api/movies/user
 ```
-#### Expected Response (200 OK)
 
-### 4. User movies endpoint (user role)
+#### Expected Response (200 OK) + data
 
-Unauthorized Access Example:
+
+#### 3b. Unauthorized Access (no credentials)
+Attempt to access the user endpoint without authentication:
+
 ```bash
 curl http://localhost:8080/api/movies/user
 ```
 
 #### Expected Response (401 Unauthorized)
-````
+```
 {"error": "Unauthorized", "message": "Full authentication is required to access this resource"}
-````
----
-
-### 5. Admin role access
-```bash
-curl -u admin:admin123 http://localhost:8080/api/movies/admin
 ```
-#### Expected Response (200 OK)
 
-### 6. Admin movies endpoint (admin role)
-
-### 7. Unauthorized Access Example (User Trying Admin Endpoint):
-```bash
-curl -u user:user123 http://localhost:8080/api/movies/admin
-```
-#### Expected Response (403 Forbidden)
-````
-{"error": "Forbidden", "message": "Access is denied"}
-````
 ## Notes
 
 - Plain-text passwords in `users.properties` are **for demo purposes only**. In production, use hashed passwords and secure storage/alternative authentication protocol.
