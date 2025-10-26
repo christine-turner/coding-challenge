@@ -1,5 +1,4 @@
 # Movie Backend Service
-
 ## Summary
 A Quarkus-based REST backend for managing and searching movies, with role-based Basic Authentication.
 - Search movies by title, year, and genres.
@@ -23,44 +22,32 @@ A Quarkus-based REST backend for managing and searching movies, with role-based 
 
 # Getting Started
 ## Option 1: Run Locally (requires Java/Gradle)
-1. Install the follow dependencies:
-- Java 17 or later
-- Gradle 8+
-- GIT
-- IDE with Java support (optional)
-2. Clone the repository
+### 1. Install the follow dependencies:
+- [Java 17 or later](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)  
+- [Gradle 8+](https://gradle.org/releases/)  
+- [Git](https://git-scm.com/downloads)  
+- [VS Code](https://code.visualstudio.com/) (this is optional, with Java extensions, or other IDE of choice) 
 
-```bash
-git clone https://github.com/your-org/movie-backend.git
-cd movie-backend
-```
+### 2. Clone the repository
 
-## Option 2: Run with Docker (no Java/Gradle needed)
-1. Install the follow dependencies:
-- Docker
-- GIT
-2. Clone the repository
-```bash
-git clone https://github.com/your-org/movie-backend.git
-cd movie-backend
-docker build -t movie-backend .
-docker run -p 8080:8080 movie-backend
-```
+````
+git clone https://github.com/christine-turner/coding-challenge.git
+cd coding-challenge
+````
+### 3. Running the Application
 
-# Running the Application
-
-## Development Mode
+#### Development Mode
 
     ./gradlew quarkusDev
 
 - Access the API at `http://localhost:8080/api/movies`
 
-## Production Build
+#### Production Build
 
     ./gradlew build
     java -jar build/quarkus-app/quarkus-run.jar
 
-## Testing
+#### Testing
 
 Run all tests:
 
@@ -69,22 +56,25 @@ Run all tests:
 - Unit tests cover `MovieService` and `MovieResource`.
 - Integration tests cover endpoint security (`@TestSecurity`) and behavior with mock services.
 
+## Option 2: Run with Docker (no Java/Gradle needed)
+Refer to root level [README](../../README.md) for instructions on how to run Docker.
+
 ---
 
 # Interacting with the Application
-## REST Endpoints
+## Introduction
 
-All endpoints are secured with **HTTP Basic Authentication**.
-
-- `admin` role: access to all endpoints
-- `user` role: limited access to allowed endpoints
+All endpoints are secured with **HTTP Basic Authentication**. These can be tested easily using cURL - other alternatives are Postman or Bruno.
 
 Example cURL request:
 ```bash
 curl -u user:user123 http://localhost:8080/api/movies
 ```
+Roles:
+- `admin` role: access to all endpoints
+- `user` role: limited access to allowed endpoints
 
-### GET `/api/movies`
+## Available Endpoint : GET `/api/movies`
 
 Search movies with optional query parameters:
 
@@ -103,66 +93,63 @@ Search movies with optional query parameters:
 
 ### 1. Unauthorized (no credentials supplied to an authorised endpoint)
 ```bash
-    curl -i http://localhost:8080/api/movies
+curl -i http://localhost:8080/api/movies
 ```
 
-**Expected Response:**
-
-    HTTP/1.1 401 Unauthorized
-    WWW-Authenticate: basic
-    Content-Length: 0
-
+#### Expected Response
+````
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: basic
+Content-Length: 0
+````
 ---
 
 ### 2. Public access (no authentication required)
 ```bash
-    curl http://localhost:8080/api/movies/public
+curl http://localhost:8080/api/movies/public
 ```
 
-**Expected Response (200 OK):**
-
-    Public movies endpoint (no auth required)
-
+#### Expected Response (200 OK)
+```
+Public movies endpoint (no auth required)
+```
 ---
-
 ### 3. User role access
+
 ```bash
 curl -u user:user123 http://localhost:8080/api/movies/user
 ```
+#### Expected Response (200 OK)
 
-**Expected Response (200 OK):**
-
-User movies endpoint (user role)
+### 4. User movies endpoint (user role)
 
 Unauthorized Access Example:
 ```bash
 curl http://localhost:8080/api/movies/user
 ```
 
-**Expected Response (401 Unauthorized):**
-
+#### Expected Response (401 Unauthorized)
+````
 {"error": "Unauthorized", "message": "Full authentication is required to access this resource"}
-
+````
 ---
 
-### 4. Admin role access
+### 5. Admin role access
 ```bash
 curl -u admin:admin123 http://localhost:8080/api/movies/admin
 ```
-**Expected Response (200 OK):**
+#### Expected Response (200 OK)
 
-Admin movies endpoint (admin role)
+### 6. Admin movies endpoint (admin role)
 
-Unauthorized Access Example (User Trying Admin Endpoint):
+### 7. Unauthorized Access Example (User Trying Admin Endpoint):
 ```bash
 curl -u user:user123 http://localhost:8080/api/movies/admin
 ```
-**Expected Response (403 Forbidden):**
-
+#### Expected Response (403 Forbidden)
+````
 {"error": "Forbidden", "message": "Access is denied"}
-
----
-
+````
 ## Notes
 
 - Plain-text passwords in `users.properties` are **for demo purposes only**. In production, use hashed passwords and secure storage/alternative authentication protocol.
