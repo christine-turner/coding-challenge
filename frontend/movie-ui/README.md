@@ -1,59 +1,93 @@
-# MovieUi
+# Movie Database Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
+## Summary
+This repository contains the Angular frontend for our application.
+It provides a modern, responsive user interface that connects to the backend API.
+Allows user to:
+- Search movies by title, year, and genres.
+- Enter user credentials, supplied to the backend for Basic Authentication.
 
-## Development server
+## Tech Stack
+- Angular 20 – Frontend framework for building modular, reactive web applications
+- TypeScript 5.9+ – Strongly typed language that enhances JavaScript development
+- Angular Material & CDK – UI component library and utilities for responsive, accessible interfaces
+- RxJS 7.8 – Reactive programming library for handling asynchronous data streams
+- Yarn – Package manager for dependency management and scripts (v1.22.22 due to Angular dependency issues)
+- Volta – Toolchain manager for consistent Node.js and Yarn versions across environments.
 
-To start a local development server, run:
+    Volta current active tools:
+    - Node: v20.19.5 (default)
+    - Yarn: v1.22.22 (default)
+---
+## Getting Started
+### Option 1 - easiest: Run with Docker (no Node/Yarn needed)
 
-```bash
-ng serve
-```
+#### 1. Install the following dependencies:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* Docker
+* Git
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+#### 2. Clone the repository
 
 ```bash
-ng test
+git clone https://github.com/your-org/your-frontend-repo.git
+cd your-frontend-repo
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+#### 3. Build and run the container
 
 ```bash
-ng e2e
+docker build -t angular-frontend .
+docker run -p 4200:4200 angular-frontend
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+#### 4. Access the application
+Open your browser and go to http://localhost:4200
 
-## Additional Resources
+### Option 2: Run Locally (requires Node/Yarn)
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+#### 1. Install the following dependencies:
+
+* Node.js
+ 18+ (Recommended: use Volta
+ to manage Node and Yarn versions for consistency.)
+* Yarn
+ 1.22+ 
+* Git
+* IDE with TypeScript/Angular support (e.g. VS Code)
+
+#### 2. Clone the repository
+
+```bash
+git clone https://github.com/your-org/your-frontend-repo.git
+cd your-frontend-repo
+```
+
+#### 3. Install dependencies
+
+```bash
+yarn install
+```
+
+#### 4. Run the development server
+
+```bash
+yarn start
+```
+
+#### 5. Open the application
+Visit http://localhost:4200
+ in your browser.
+The app will automatically reload when you make changes to the source files.
+
+## Project Structure
+```
+├── src/
+│   └── app/
+│       ├── components/      # Reusable UI components
+│       ├── service/         # API and data services
+│       └── app.module.ts    # Root module
+├── angular.json
+├── package.json
+└── README.md
+```
