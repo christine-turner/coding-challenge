@@ -1,0 +1,55 @@
+services:
+  # Backend service running in Quarkus dev mode
+  # Features: Dev UI at /q/dev, hot reload, debugging on port 5005
+  backend:
+    build:
+      context: ./backend/movie-api
+      dockerfile: Dockerfile
+    container_name: movie-api
+    ports:
+      - "8080:8080"
+      - "5005:5005"  # Debug port
+    volumes:
+      # Mount source code for hot reload
+      - ./backend/movie-api/src:/app/src
+      - ./backend/movie-api/build.gradle:/app/build.gradle
+      - ./backend/movie-api/gradle.properties:/app/gradle.properties
+      # Cache gradle dependencies
+      - gradle-cache:/root/.gradle
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s  # Dev mode takes longer to start
+    networks:
+      - movie-network
+
+  frontend:
+    build:
+      context: ./frontend/movie-ui
+      dockerfile: Dockerfile
+    container_name: movie-ui
+    ports:
+      - "4200:4200"
+    volumes:
+      # Mount source code for hot-reload
+      - ./frontend/movie-ui/src:/app/src
+      - ./frontend/movie-ui/angular.json:/app/angular.json
+      - ./frontend/movie-ui/tsconfig.json:/app/tsconfig.json
+      - ./frontend/movie-ui/tsconfig.app.json:/app/tsconfig.app.json
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:4200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - movie-network
+
+networks:
+  movie-network:
+    driver: bridge
+
+volumes:
+  gradle-cache:
