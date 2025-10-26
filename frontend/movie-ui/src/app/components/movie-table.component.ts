@@ -9,9 +9,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { DataService } from '../service/data.service';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../service/auth.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 
 export interface Movie {
   title: string;
@@ -30,6 +34,10 @@ export interface Movie {
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatChipsModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   template: `
     <div class="filters">
@@ -45,7 +53,13 @@ export interface Movie {
 
       <mat-form-field appearance="outline">
         <mat-label>Genres</mat-label>
-        <input matInput (keyup)="applyFilter()" [(ngModel)]="filterValues.genre" />
+
+        <!-- Multi-select dropdown -->
+        <mat-select multiple [(ngModel)]="filterValues.genre" (selectionChange)="applyFilter()">
+          <mat-option *ngFor="let genre of genres" [value]="genre">
+            {{ genre }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
     <div class="movie-table-container">
@@ -62,7 +76,7 @@ export interface Movie {
 
         <ng-container matColumnDef="genres">
           <th mat-header-cell *matHeaderCellDef>Genres</th>
-          <td mat-cell *matCellDef="let movie">{{ movie.genres.join(', ') }}</td>
+          <td mat-cell *matCellDef="let movie"><mat-chip *ngFor="let genre of movie.genres">{{ genre }}</mat-chip></td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -86,10 +100,56 @@ export interface Movie {
 })
 export class MovieTableComponent implements AfterViewInit {
   displayedColumns: string[] = ['title', 'year', 'genres'];
+
+  // hard-coded list of genres for filter dropdown
+  // in a real app this would likely come from the backend
+  genres = [
+    'Action',
+    'Adventure',
+    'Animated',
+    'Biography',
+    'Comedy',
+    'Crime',
+    'Dance',
+    'Disaster',
+    'Documentary',
+    'Drama',
+    'Erotic',
+    'Family',
+    'Fantasy',
+    'Found Footage',
+    'Historical',
+    'Horror',
+    'Independent',
+    'Legal',
+    'Live Action',
+    'Martial Arts',
+    'Musical',
+    'Mystery',
+    'Noir',
+    'Performance',
+    'Political',
+    'Romance',
+    'Satire',
+    'Science Fiction',
+    'Short',
+    'Silent',
+    'Slasher',
+    'Sport',
+    'Sports',
+    'Spy',
+    'Superhero',
+    'Supernatural',
+    'Suspense',
+    'Teen',
+    'Thriller',
+    'War',
+    'Western',
+  ];
   filterValues = {
     title: '',
     year: '',
-    genre: '',
+    genre: [] as string[],
   };
 
   dataSource = new MatTableDataSource<Movie>();
@@ -134,6 +194,6 @@ export class MovieTableComponent implements AfterViewInit {
 
   ngOnDestroy() {
     this.dataSourceSubscription.unsubscribe(); // prevents memory leak
-    this.credentialsSubscription.unsubscribe(); 
+    this.credentialsSubscription.unsubscribe();
   }
 }

@@ -10,10 +10,10 @@ export class DataService {
   private filtersSource = new BehaviorSubject<{
     title: string;
     year: string;
-    genre: string;
+    genre: string[];
   } | null>(null);
   filters$ = this.filtersSource.asObservable();
-  setFilters(filterValues: { title: string; year: string; genre: string }) {
+  setFilters(filterValues: { title: string; year: string; genre: string[] }) {
     this.filtersSource.next(filterValues);
   }
 
@@ -23,7 +23,7 @@ export class DataService {
   private getMovies(
     username: string,
     password: string,
-    filters?: { title?: string; year?: string; genre?: string }
+    filters?: { title?: string; year?: string; genre?: string[] }
   ): Observable<Movie[]> {
     const authHeader = 'Basic ' + btoa(`${username}:${password}`);
     let params = new HttpParams();
@@ -31,7 +31,11 @@ export class DataService {
     if (filters) {
       if (filters.title) params = params.set('title', filters.title);
       if (filters.year) params = params.set('year', filters.year);
-      if (filters.genre) params = params.set('genre', filters.genre);
+      if (filters.genre && filters.genre.length > 0) {
+        filters.genre.forEach(genre => {
+          params = params.append('genre', genre);
+        });
+      }
     }
     const headers = new HttpHeaders({ Authorization: authHeader });
     return this.http.get<Movie[]>('http://localhost:8080/api/movies', { headers, params }).pipe(
@@ -42,7 +46,7 @@ export class DataService {
   public loadMovies(
     username: string,
     password: string,
-    filters?: { title?: string; year?: string; genres?: string }
+    filters?: { title?: string; year?: string; genres?: string[] }
   ): void {
     // note: my understanding is HTTP observables in Angular automatically complete
     // after emitting one value so haven't unsubscribed here
