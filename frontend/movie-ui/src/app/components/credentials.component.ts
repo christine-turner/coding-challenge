@@ -39,7 +39,7 @@ import { Subscription } from 'rxjs';
   ],
 })
 export class CredentialsComponent {
-  filters?: { title?: string; year?: string; genres?: string };
+  filters?: { title?: string; year?: string; genres?: string[] };
   private filtersSubscription!: Subscription;
   username = '';
   password = '';
